@@ -368,8 +368,15 @@ export const ChatMessages = () => {
 		userSelectedId,
 		usersProfilesImagesById,
 	} = useChat();
+	const chatMessagesContainerRef = useRef(null);
 	const [openMenu, setOpenMenu] = React.useState(false);
 	const hasMessages = Boolean(messages.length);
+
+	useLayoutEffect(() => {
+		const messagesElement = chatMessagesContainerRef?.current;
+		if (!messagesElement) return;
+		messagesElement.scrollTo(0, messagesElement.scrollHeight);
+	}, [messages]);
 
 	const openMenuCallback = () => setOpenMenu(true);
 	const closeMenu = (reason) => {
@@ -390,7 +397,7 @@ export const ChatMessages = () => {
 	};
 
 	return (
-		<div className='chat-messages-container'>
+		<div ref={chatMessagesContainerRef} className='chat-messages-container'>
 			{!hasMessages && <p>No hay mensajes.</p>}
 			{messages.map(({ id, message, userId }, index) => (
 				<ChatMessageWrapper

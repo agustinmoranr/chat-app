@@ -165,12 +165,17 @@
 	overflow: auto;
 	gap: 8px;
 	container-type: inline-size;
+	padding-right: 32px;
+	padding-bottom: 16px;
 }
 
 .chat-message-container {
-	display: flex;
-	gap: 8px;
+	max-width: 40%;
 	width: fit-content;
+	display: grid;
+	grid-template-columns: 40px 1fr;
+	align-items: flex-end;
+	gap: 8px;
 	transition: all 200ms ease-in-out;
 }
 
@@ -188,10 +193,12 @@
 		'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 	background-color: var(--text-primary-color);
 	font-weight: 600;
+	word-break: break-word;
 }
 
 .chat-message:only-child {
 	margin-left: 48px;
+	grid-column: 1 / -1;
 }
 
 .chat-message-selected {
@@ -214,5 +221,15 @@
 		max-width: none;
 		grid-template-columns: 16px 1fr 16px;
 		border-radius: 0px;
+	}
+
+	.chat-messages-container {
+		padding-right: 0px;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.chat-message-container {
+		max-width: 80%;
 	}
 }
