@@ -1,0 +1,26 @@
+.menu {
+	position: absolute;
+	opacity: 0;
+	border-radius: 4px;
+	background-color: #ffffff;
+	box-shadow: 0 3px 5px 1px var(--hover-color);
+	transition: opacity 200ms ease-in-out;
+	font-family: var(--primary-font);
+}
+
+.menu.show-menu {
+	opacity: 1;
+}
+
+.menu-list {
+	padding: 8px 0px;
+	list-style: none;
+}
+
+.menu-item {
+	padding: 4px 16px;
+}
+
+.menu-item:hover {
+	background-color: var(--hover-color);
+}

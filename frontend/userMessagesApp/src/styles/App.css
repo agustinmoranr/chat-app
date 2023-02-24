@@ -1,0 +1,19 @@
+.layout {
+	min-height: 100vh;
+	min-height: 100dvh;
+	display: grid;
+	grid-template-rows: min-content 1fr min-content;
+	align-content: flex-start;
+	background-color: var(--background-color);
+}
+
+.main-content {
+	display: flex;
+	padding: var(--section-padding);
+}
+
+@media screen and (max-width: 1024px) {
+	.main-content {
+		padding: 0px;
+	}
+}

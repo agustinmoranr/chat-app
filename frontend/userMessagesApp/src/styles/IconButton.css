@@ -1,0 +1,24 @@
+.icon-button-container {
+	height: var(--icon-button-height);
+	width: var(--icon-button-width);
+	border-radius: 50%;
+}
+
+.icon-button {
+	height: 100%;
+	width: 100%;
+	display: grid;
+	place-items: center;
+	background-color: transparent;
+	border: none;
+	border-radius: 50%;
+}
+
+.icon-button:hover {
+	background-color: var(--hover-color);
+}
+
+.icon-button:disabled {
+	pointer-events: none;
+	opacity: 0.4;
+}

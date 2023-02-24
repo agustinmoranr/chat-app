@@ -1,0 +1,17 @@
+.badge {
+	position: relative;
+	font-family: var(--primary-font);
+}
+
+.badge__img {
+	object-fit: cover;
+	border-radius: 50%;
+	user-select: none;
+}
+
+.badge__name {
+	font-size: 1.5rem;
+	font-weight: bold;
+	color: var(--text-primary-color);
+	text-shadow: 1px 1px var(--background-color);
+}
