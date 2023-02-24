@@ -278,11 +278,11 @@ export const ChatForm = ({ onSuccess = () => {}, onError = () => {} }) => {
 				<div className='chat-form__edit-container'>
 					<EditIcon variant='outlined' className='chat-form__edit-icon' />
 					<div className='edit-message__text-container'>
-						<p children='edit-message__text-helper'>Editar Mensaje</p>
-						<p children='edit-message__text'>{messageSelected?.message}</p>
+						<p className='edit-message__text-helper'>Editar Mensaje</p>
+						<p className='edit-message__text'>{messageSelected?.message}</p>
 					</div>
 					<IconButton onClick={reset}>
-						<CloseIcon variant='outlined' style={{ color: '#8f95da' }} />
+						<CloseIcon variant='outlined' />
 					</IconButton>
 				</div>
 			)}

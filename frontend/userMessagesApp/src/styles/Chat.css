@@ -107,6 +107,7 @@
 	font-size: 0.875rem;
 	font-weight: 600;
 	color: var(--text-primary-color);
+	letter-spacing: 1px;
 }
 
 .edit-message__text {
@@ -115,6 +116,7 @@
 	white-space: nowrap;
 	font-size: 0.875rem;
 	font-style: italic;
+	color: var(--text-primary-color);
 }
 
 .chat__form__input-container {
