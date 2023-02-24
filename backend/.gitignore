@@ -1,2 +1,5 @@
 .env
 node_modules
+dist
+sam-template.packaged.yaml
+api-gateway-event.json
