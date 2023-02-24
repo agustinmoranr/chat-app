@@ -1,3 +1,5 @@
 const messageMutations = require('./messages');
+const chatMutations = require('./chat');
+const userMutations = require('./users');
 
-module.exports = { ...messageMutations };
+module.exports = { ...userMutations, ...messageMutations, ...chatMutations };

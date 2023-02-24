@@ -9,12 +9,16 @@ const messageMutations = {
 		args: {
 			message: { type: GraphQLNonNull(GraphQLString) },
 			userId: { type: GraphQLNonNull(GraphQLID) },
+			chatId: { type: GraphQLNonNull(GraphQLID) },
+			createdAt: { type: GraphQLNonNull(GraphQLString) },
 		},
-		resolve: (parent, { message, userId }) => {
+		resolve: (parent, { message, userId, chatId, createdAt }) => {
 			const newMessage = {
 				id: `${MESSAGES.length + 1}`,
 				userId,
+				chatId,
 				message,
+				createdAt,
 				deleted: false,
 			};
 			MESSAGES.push(newMessage);

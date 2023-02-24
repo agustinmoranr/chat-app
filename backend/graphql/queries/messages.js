@@ -21,6 +21,18 @@ const MessageQueries = {
 			);
 		},
 	},
+	listMessagesByChatId: {
+		type: new GraphQLList(MessageType),
+		description: 'List of Messages by chat id',
+		args: {
+			id: { type: GraphQLID },
+		},
+		resolve: (parent, { id }) => {
+			return MESSAGES.filter(
+				({ chatId, deleted }) => id === chatId && !deleted,
+			);
+		},
+	},
 	getMessage: {
 		type: MessageType,
 		description: 'Retrieve a sigle message',

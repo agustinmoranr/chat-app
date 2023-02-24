@@ -1,11 +1,15 @@
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
+const cors = require('cors');
+require('dotenv').config();
 const { GraphQLSchema, GraphQLObjectType } = require('graphql');
 const queries = require('./graphql/queries');
 const mutations = require('./graphql/mutations');
 const app = express();
-const port = 8080;
+const PORT = process.env.PORT;
+const ORIGIN = process.env.ORIGIN;
 
+//Creación de esquema con buildSchema
 // const schema = buildSchema(`
 //   type Message {
 //     id: ID!
@@ -101,6 +105,11 @@ const schema = new GraphQLSchema({
 	mutation: RootMutationType,
 });
 
+const corsConfig = {
+	origin: ORIGIN,
+};
+
+app.use(cors(corsConfig));
 app.use(
 	'/graphql',
 	graphqlHTTP({
@@ -110,6 +119,6 @@ app.use(
 	}),
 );
 
-app.listen(port, () =>
-	console.log(`Server running successfully in port:${port}`),
+app.listen(PORT, () =>
+	console.log(`Server running successfully in port:${PORT}`),
 );
