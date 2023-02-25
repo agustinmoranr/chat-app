@@ -2,7 +2,7 @@
 	"name": "graphqapi",
 	"version": "1.0.0",
 	"description": "An excercise to practice graphql",
-	"main": "index.js",
+	"main": "lambda.js",
 	"config": {
 		"s3BucketName": "agus-dev-chat-app-backend-deployment",
 		"region": "us-east-1",
@@ -33,6 +33,7 @@
 	},
 	"dependencies": {
 		"@vendia/serverless-express": "^4.10.1",
+		"body-parser": "^1.20.2",
 		"cors": "^2.8.5",
 		"dayjs": "^1.11.7",
 		"dotenv": "^16.0.3",

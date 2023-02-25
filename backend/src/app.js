@@ -1,13 +1,13 @@
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const cors = require('cors');
+const body_parser = require('body-parser');
 require('dotenv').config();
 const { GraphQLSchema, GraphQLObjectType } = require('graphql');
 const queries = require('./graphql/queries');
 const mutations = require('./graphql/mutations');
 const app = express();
-const PORT = process.env.PORT;
-const ORIGIN = process.env.ORIGIN;
+const ORIGINS = [process.env.ORIGIN_NETLIFY, process.env.ORIGIN_AWS_AMPLIFY];
 
 //Creación de esquema con buildSchema
 // const schema = buildSchema(`
@@ -106,10 +106,11 @@ const schema = new GraphQLSchema({
 });
 
 const corsConfig = {
-	origin: ORIGIN,
+	origin: ORIGINS,
 };
 
 app.use(cors(corsConfig));
+app.use(body_parser.json({ limit: '50mb' }));
 app.use(
 	'/graphql',
 	graphqlHTTP({
