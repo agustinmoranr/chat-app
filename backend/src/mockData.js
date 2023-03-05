@@ -15,6 +15,13 @@ const USERS = [
 		deleted: false,
 		createdAt: dayjs('2022-02-21').toISOString(),
 	},
+	// {
+	// 	id: '3',
+	// 	name: 'Maximiliano',
+	// 	profileImage: '',
+	// 	deleted: false,
+	// 	createdAt: dayjs('2022-02-21').toISOString(),
+	// },
 ];
 
 const CHATS = [

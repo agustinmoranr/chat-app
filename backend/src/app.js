@@ -7,7 +7,11 @@ const { GraphQLSchema, GraphQLObjectType } = require('graphql');
 const queries = require('./graphql/queries');
 const mutations = require('./graphql/mutations');
 const app = express();
-const ORIGINS = [process.env.ORIGIN_NETLIFY, process.env.ORIGIN_AWS_AMPLIFY];
+const ORIGINS = [
+	process.env.ORIGIN_NETLIFY,
+	process.env.ORIGIN_AWS_AMPLIFY,
+	process.env.ORIGIN_LOCAL,
+];
 
 //Creación de esquema con buildSchema
 // const schema = buildSchema(`
