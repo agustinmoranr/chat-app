@@ -1,4 +1,10 @@
-import { Chat, ChatProfile, ChatForm, ChatMessages } from './components/Chat';
+import {
+	Chat,
+	ChatHeader,
+	ChatProfile,
+	ChatForm,
+	ChatMessages,
+} from './components/Chat';
 import './styles/App.css';
 
 function App() {
@@ -7,6 +13,7 @@ function App() {
 			<header></header>
 			<main className='main-content'>
 				<Chat>
+					<ChatHeader />
 					<ChatProfile />
 					<ChatMessages />
 					<ChatForm />

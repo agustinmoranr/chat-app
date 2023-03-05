@@ -12,6 +12,11 @@
 	--icon-button-height: 40px;
 	--hover-color: rgba(0, 0, 0, 0.1);
 	--box-shadow-menu: 0 3px 5px 1px var(--hover-color);
+	--p-font-size-normal: 1rem;
+	--p-font-size-medium: 0.875rem;
+	--p-font-size-small: 0.75rem;
+	--gap-normal: 1rem;
+	--gap-medium: 0.5rem;
 }
 
 *,
@@ -39,6 +44,8 @@ html {
 
 body {
 	min-height: 100vh;
+	min-height: 100dvh;
+	font-family: var(--primary-font);
 }
 
 /* responsive images/videos */
@@ -48,4 +55,8 @@ svg,
 video {
 	display: block;
 	max-width: 100%;
+}
+
+p {
+	font-size: var(--p-font-size-normal);
 }

@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
+import useGetPointerPosition from '../hooks/useGetPointerPosition';
 import '../styles/Menu.css';
 
 export const CLOSE_REASONS = {
@@ -7,49 +8,79 @@ export const CLOSE_REASONS = {
 	SELECT_ITEM: 'selectItem',
 };
 
-export const Menu = ({ children, open, onClose }) => {
+export const Menu = ({
+	children,
+	open,
+	onClose,
+	keepMounted,
+	transitionDuration = 200,
+}) => {
 	const menuRef = useRef(null);
-	const [positionToDispaly, setPositionToDisplay] = useState(null);
+	const [isMenuRendered, setIsMenuRendered] = useState(false);
+	const [position, reset] = useGetPointerPosition();
+	const mountMenu = open || keepMounted;
 
 	useEffect(() => {
-		if (!open) return;
-		document.addEventListener('contextmenu', getPointer);
-		document.addEventListener('click', onDomClick);
+		if (open) {
+			handleOpen();
+			window.addEventListener('click', handleCloseMenu);
+		}
 
 		return () => {
-			document.removeEventListener('contextmenu', getPointer);
-			document.removeEventListener('click', onDomClick);
+			window.removeEventListener('click', handleCloseMenu);
 		};
 	}, [open]);
 
-	function onDomClick(event) {
-		const clickingMenu = event.target.matches('.menu');
-		const clickingMenuItem = event.target.matches('.menu-item');
-		let reason =
-			!clickingMenu && !clickingMenuItem
-				? CLOSE_REASONS.CLICK_OUTSIDE_MENU
-				: clickingMenuItem
-				? CLOSE_REASONS.SELECT_ITEM
-				: null;
-		if (!clickingMenu && open) {
+	useLayoutEffect(() => {
+		if (isMenuRendered) {
+			menuRef.current?.classList.add('show-menu');
+		}
+	}, [isMenuRendered]);
+
+	function handleOpen() {
+		setIsMenuRendered(true);
+	}
+
+	function onCloseMenu(reason) {
+		menuRef.current?.addEventListener('transitionend', onEndTranstion);
+		menuRef.current?.classList.remove('show-menu');
+		function onEndTranstion() {
 			onClose(reason);
-			setPositionToDisplay(null);
-			menuRef.current?.classList.remove('show-menu');
+			reset();
+			setIsMenuRendered(false);
+			menuRef.current?.removeEventListener('transitionend', onEndTranstion);
 		}
 	}
 
-	function getPointer(event) {
-		setPositionToDisplay({ top: event.pageY, left: event.pageX });
-		setTimeout(() => menuRef.current?.classList.add('show-menu'), 0);
+	function handleCloseMenu(event) {
+		const clickingMenu = event.target.matches('.menu');
+		const clickingMenuItem = event.target.matches('.menu-item');
+		const shouldClose = open && !clickingMenu;
+		let reason = null;
+		if (clickingMenuItem) {
+			reason = CLOSE_REASONS.SELECT_ITEM;
+		}
+		if (!clickingMenu && !clickingMenuItem) {
+			reason = CLOSE_REASONS.CLICK_OUTSIDE_MENU;
+		}
+		if (shouldClose) {
+			onCloseMenu(reason);
+		}
 	}
 
 	return (
-		open &&
+		mountMenu &&
 		createPortal(
-			<div ref={menuRef} className='menu' style={positionToDispaly}>
+			<div
+				ref={menuRef}
+				className='menu'
+				style={{
+					transitionDuration: `${transitionDuration}ms`,
+					top: position?.top,
+					left: position?.left,
+				}}>
 				<ul className='menu-list'>{children}</ul>
 			</div>,
-
 			document.body,
 		)
 	);

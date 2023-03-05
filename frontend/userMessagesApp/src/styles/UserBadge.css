@@ -1,6 +1,5 @@
 .badge {
 	position: relative;
-	font-family: var(--primary-font);
 }
 
 .badge__img {
@@ -10,8 +9,8 @@
 }
 
 .badge__name {
-	font-size: 1.5rem;
 	font-weight: bold;
 	color: var(--text-primary-color);
 	text-shadow: 1px 1px var(--background-color);
+	font-size: max(1.5rem, 2vw);
 }

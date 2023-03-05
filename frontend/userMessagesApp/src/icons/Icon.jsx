@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/Icon.css';
 
 const ICON_VARIANTS = {
 	outlined: 'outlined',
@@ -18,7 +19,7 @@ const setCssCustomProperty = (element, property, value) => {
 
 const Icon = ({ children, className, color, variant, ...props }) => {
 	const iconRef = React.useRef(null);
-	let _className = `material-symbols-${ICON_VARIANTS[variant]}`;
+	let _className = `material-symbols-${ICON_VARIANTS[variant]} icon`;
 	_className = className ? `${_className} ${className}` : _className;
 
 	React.useEffect(() => {

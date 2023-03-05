@@ -19,8 +19,8 @@ export const UserBagdeImage = ({ src, ...props }) => {
 
 export const UserBadgeName = ({ children, ...props }) => {
 	return (
-		<h2 className='badge__name' {...props}>
+		<p className='badge__name' {...props}>
 			{children}
-		</h2>
+		</p>
 	);
 };

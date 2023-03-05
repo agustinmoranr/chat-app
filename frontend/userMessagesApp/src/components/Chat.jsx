@@ -19,6 +19,7 @@ import dayjs from 'dayjs';
 import useMessageOperations from '../hooks/useMessageOperations';
 import { getChatQuery } from '../graphql/queries';
 import useGraphQLOperations from '../hooks/useGraphqlOperations';
+import useLongPress from '../hooks/useLongPress';
 import '../styles/Chat.css';
 
 const ChatContext = createContext();
@@ -170,47 +171,57 @@ export const Chat = ({ children }) => {
 	);
 };
 
+export const ChatHeader = ({ children }) => {
+	const { chat } = useChat();
+
+	return (
+		<header className='chat-header'>
+			<h1>{children || chat?.name}</h1>
+		</header>
+	);
+};
+
 export const ChatProfile = () => {
 	const { userSelected, userSelectedId, setUserSelectedId, users } = useChat();
 	const restChatUser = users.filter(({ id }) => id !== userSelectedId);
 	const hasMultiple = restChatUser?.length > 1;
 
 	useLayoutEffect(() => {
-		const element = document.querySelector('.chat__profile__switch-account');
+		const element = document.querySelector('.chat-profile__switch-account');
 
 		if (hasMultiple) {
-			element.classList.add('switch-account-multiple');
+			element.classList.add('has-multiple');
+			element.classList.remove('has-only-one');
 		} else {
-			element.classList.add('switch-account-only-one');
+			element.classList.add('has-only-one');
+			element.classList.remove('has-multiple');
 		}
 	}, [hasMultiple]);
 
 	return (
-		<div className='chat__profile'>
+		<div className='chat-profile'>
 			<UserBagde>
-				<UserBagdeImage
-					src={userSelected?.profileImage}
-					width='200px'
-					height='200px'
-				/>
-				<div className='chat__profile__switch-account'>
-					{restChatUser.map(({ id, profileImage }) => (
-						<div
-							key={id}
-							onClick={() => setUserSelectedId(id)}
-							className='switch-account-image-container'>
-							<UserBagdeImage
-								src={profileImage}
-								width={hasMultiple ? 50 : 100}
-								height={hasMultiple ? 50 : 100}
-							/>
-							<Overlay rounded={true} />
-							<SwitchAccountIcon
-								color='text-primary'
-								className='switch-account-icon'
-							/>
-						</div>
-					))}
+				<div className='chat-profile__switch-wrapper'>
+					<UserBagdeImage src={userSelected?.profileImage} />
+					<div className='chat-profile__switch-account'>
+						{restChatUser.map(({ id, profileImage }) => (
+							<div
+								key={id}
+								onClick={() => setUserSelectedId(id)}
+								className='switch-account-image-container'>
+								<UserBagdeImage
+									src={profileImage}
+									width={hasMultiple ? 50 : 100}
+									height={hasMultiple ? 50 : 100}
+								/>
+								<Overlay rounded={true} />
+								<SwitchAccountIcon
+									color='text-primary'
+									className='switch-account-icon'
+								/>
+							</div>
+						))}
+					</div>
 				</div>
 				<UserBadgeName>{userSelected?.name}</UserBadgeName>
 			</UserBagde>
@@ -301,30 +312,30 @@ export const ChatForm = ({ onSuccess = () => {}, onError = () => {} }) => {
 							ref={newMessageRef}
 						/>
 					</label>
-					<IconButton
-						className='chat-form-button'
-						disabled={isInputEmpty || isNotEdited}
-						type='submit'>
-						<SendIcon variant='outlined' color='text-primary' />
-					</IconButton>
 				</div>
+				<IconButton
+					className='chat-form-button'
+					disabled={isInputEmpty || isNotEdited}
+					type='submit'>
+					<SendIcon variant='outlined' color='text-primary' />
+				</IconButton>
 			</form>
 		</div>
 	);
 };
 
-export const ChatMessage = ({ message, id, onContextMenu, isSelected }) => {
+export const ChatMessage = ({
+	message,
+	onContextMenu,
+	isSelected,
+	...props
+}) => {
 	let _className = isSelected
 		? 'chat-message chat-message-selected'
 		: 'chat-message';
 
-	function handleContextMenu(event) {
-		event.preventDefault();
-		onContextMenu(id, event);
-	}
-
 	return (
-		<p onContextMenu={handleContextMenu} className={_className}>
+		<p onContextMenu={onContextMenu} className={_className} {...props}>
 			{message}
 		</p>
 	);
@@ -386,7 +397,8 @@ export const ChatMessages = () => {
 		setOpenMenu(false);
 	};
 
-	const onContextMenuMessage = (id, event) => {
+	const onContextMenuMessage = (event, id) => {
+		event.preventDefault();
 		openMenuCallback();
 		setMessageSelectedId(id);
 	};
@@ -395,6 +407,11 @@ export const ChatMessages = () => {
 		handleDeleteMessage(messageSelectedId);
 		setMessageSelectedId(null);
 	};
+
+	const { onTouchStart, onTouchEnd } = useLongPress(
+		onContextMenuMessage,
+		() => {},
+	);
 
 	return (
 		<div ref={chatMessagesContainerRef} className='chat-messages-container'>
@@ -412,9 +429,10 @@ export const ChatMessages = () => {
 					)}
 					<ChatMessage
 						message={message}
-						id={id}
 						isSelected={messageSelectedId === id}
-						onContextMenu={onContextMenuMessage}
+						onContextMenu={(e) => onContextMenuMessage(e, id)}
+						onTouchStart={(e) => onTouchStart(e, id)}
+						onTouchEnd={(e) => onTouchEnd(e, id)}
 					/>
 				</ChatMessageWrapper>
 			))}

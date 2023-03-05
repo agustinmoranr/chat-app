@@ -7,7 +7,7 @@
 .icon-button {
 	height: 100%;
 	width: 100%;
-	display: grid;
+	display: flex;
 	place-items: center;
 	background-color: transparent;
 	border: none;
